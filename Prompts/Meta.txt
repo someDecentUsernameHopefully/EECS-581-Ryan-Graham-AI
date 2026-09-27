@@ -1,0 +1,1 @@
+All prompts were ran on LM Studio with the gpt-oss-20b model. Only prompts/responses that I believe contributed to the code in any way are included here. Any prompts that I discarded after looking at them are not.

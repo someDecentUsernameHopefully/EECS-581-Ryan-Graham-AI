@@ -1,0 +1,87 @@
+Please write code to form a string representing the IP address (which may or may not include the port) at line 20. If the port value is negative, assume that there is no port associated with it. Otherwise, assume the port is valid.
+
+Attached is the following version of main.cpp:
+
+#include <iostream>
+#include <string>
+#include "IpDetector.hpp"
+using namespace std;
+
+int main() {
+    IpDetector detector;
+    string input;
+    while (true) {
+        cout << "Enter an input text:\t";
+        cin >> input;
+        if (input == "END") {
+            break;
+        }
+        unsigned long outputAddress;
+        int outputPort;
+        bool foundIp = detector.extractIPv4(input, outputAddress, outputPort);
+        if (foundIp) {
+            // Form the output string
+            // AI Code here.
+            cout << "Extracted IPv4 Address: " << outputAddress << endl;
+        } else {
+            cout << "No IPv4 Address found." << endl;
+        }
+
+    }
+    cout << "Program Terminated." << endl;
+    return 0;
+}
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Output Code:
+
+// ------------------------------------------------------------
+// Convert the 32‑bit integer to dotted‑decimal string
+std::ostringstream oss;
+oss << ((outputAddress >> 24) & 0xFF) << '.'
+    << ((outputAddress >> 16) & 0xFF) << '.'
+    << ((outputAddress >> 8)  & 0xFF) << '.'
+    << ( outputAddress        & 0xFF);
+
+if (outputPort >= 0) {
+    oss << ':' << outputPort;          // port is present
+}
+
+std::string ipString = oss.str();      // final string to print
+// ------------------------------------------------------------
+cout << "Extracted IPv4 Address: " << ipString << endl;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+I do not like this approach to the output, so I will ask it to use a sprintf function to form the IP address instead.
+
+AI Code v2:
+
+// ------------------------------------------------------------
+// Build a dotted‑decimal string with an optional port using sprintf
+char ipBuf[50];                      // 4×3 digits + 3 dots + possible ":xxxx" + '\0'
+if (outputPort >= 0) {
+    /* Port present – format "a.b.c.d:port" */
+    std::sprintf(ipBuf, "%u.%u.%u.%u:%d",
+                 (outputAddress >> 24) & 0xFF,
+                 (outputAddress >> 16) & 0xFF,
+                 (outputAddress >> 8 ) & 0xFF,
+                 outputAddress        & 0xFF,
+                 outputPort);
+} else {
+    /* No port – format "a.b.c.d" */
+    std::sprintf(ipBuf, "%u.%u.%u.%u",
+                 (outputAddress >> 24) & 0xFF,
+                 (outputAddress >> 16) & 0xFF,
+                 (outputAddress >> 8 ) & 0xFF,
+                 outputAddress        & 0xFF);
+}
+
+std::string ipString(ipBuf);          // optional: convert to std::string for printing
+// ------------------------------------------------------------
+cout << "Extracted IPv4 Address: " << ipString << endl;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+This was then modified to remove the std:: references which are redundant, and use %lu format specifers instead of normal ones for the sake of fixing compiler errors.
