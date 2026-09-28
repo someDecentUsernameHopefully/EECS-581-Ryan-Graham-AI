@@ -1,0 +1,2 @@
+I did notice a section for this prompt where it would cease checking an input if a substring it search was the empty string, so I removed the line of code that checks for this.
+An empty substring like this is the result of one of the functions I wrote processing any garbage text, and an IP address can follow such text.
