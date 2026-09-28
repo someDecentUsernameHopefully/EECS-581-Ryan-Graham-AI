@@ -1,1 +1,3 @@
 All prompts were ran on LM Studio with the gpt-oss-20b model. Only prompts/responses that I believe contributed to the code in any way are included here. Any prompts that I discarded after looking at them are not.
+
+Everything except the IpAddress constructor, the assigned function extractIPv4, and code to print out results is written by my own hand and those functions I just listed are ones with AI code.
